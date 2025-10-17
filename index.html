@@ -3,488 +3,519 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Data Karyawan</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Google Fonts: Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Formulir Input Data Karyawan</title>
 
-    <!-- SweetAlert2 CSS -->
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    
+
+    <!-- Custom CSS -->
     <style>
         :root {
-            --primary-color: #8A2BE2; /* Ungu */
-            --secondary-color: #FFD700; /* Kuning */
-            --light-gray: #f8f9fa;
-            --dark-gray: #343a40;
-            --border-radius: 12px;
+            --primary-color: #9b59b6; /* Ungu */
+            --secondary-color: #f1c40f; /* Kuning */
+            --light-color: #ffffff;
+            --dark-color: #343a40;
+            --body-bg: #f8f9fa;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-gray);
+            background-color: var(--body-bg);
+            font-family: 'Inter', sans-serif;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
             padding: 2rem 0;
         }
 
         .form-container {
-            background-color: white;
-            padding: 2.5rem;
-            border-radius: var(--border-radius);
+            background-color: var(--light-color);
+            border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 750px;
             overflow: hidden;
+            width: 100%;
+            max-width: 800px;
         }
 
+        .form-header {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+        
         .form-header h2 {
-            color: var(--primary-color);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin: 0;
+            font-weight: 600;
         }
 
-        .form-header p {
-            color: #6c757d;
+        #multiStepForm {
+            padding: 2rem 2.5rem;
+        }
+
+        .progress-container {
             margin-bottom: 2rem;
         }
 
-        /* Progress Bar */
-        .progress-bar-container {
-            margin-bottom: 2.5rem;
-        }
         .progress {
             height: 10px;
             border-radius: 5px;
-            background-color: #e9ecef;
+            background-color: #e0e0e0;
         }
+
         .progress-bar {
-            background-color: var(--primary-color);
+            background-color: var(--secondary-color);
             transition: width 0.4s ease;
         }
 
         .form-step {
             display: none;
+            animation: fadeIn 0.5s;
         }
 
         .form-step.active {
             display: block;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-step h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
         .form-label {
             font-weight: 500;
-            color: var(--dark-gray);
+            color: var(--dark-color);
         }
 
         .form-control, .form-select {
             border-radius: 8px;
             border: 1px solid #ced4da;
             padding: 0.75rem 1rem;
-            transition: all 0.3s ease;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .form-control:focus, .form-select:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(138, 43, 226, 0.25);
-        }
-        
-        /* File Input Styling */
-        .form-control[type="file"] {
-            padding: 0;
-        }
-        .form-control[type="file"]::file-selector-button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1rem;
-            margin-right: 1rem;
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .form-control[type="file"]::file-selector-button:hover {
-            background-color: #6a1b9a;
+            box-shadow: 0 0 0 0.25rem rgba(155, 89, 182, 0.25);
         }
 
-
-        .form-buttons {
+        .button-group {
             display: flex;
             justify-content: space-between;
             margin-top: 2rem;
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
             border-radius: 8px;
+            padding: 0.75rem 1.5rem;
             font-weight: 600;
             transition: all 0.3s ease;
             border: none;
+            min-width: 120px;
         }
 
         .btn-primary {
             background-color: var(--primary-color);
-            color: white;
+            color: var(--light-color);
         }
 
         .btn-primary:hover {
-            background-color: #6a1b9a;
+            background-color: #8e44ad;
             transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4);
         }
-
+        
         .btn-secondary {
-            background-color: #e9ecef;
-            color: var(--dark-gray);
+            background-color: #bdc3c7;
         }
-        
         .btn-secondary:hover {
-            background-color: #d8dde2;
+            background-color: #95a5a6;
+        }
+
+        .btn-success {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+        .btn-success:hover {
+            background-color: #d4ac0d;
         }
         
-        .btn-submit {
-            background-color: var(--secondary-color);
-            color: var(--dark-gray);
+        small.form-text {
+            color: #6c757d;
         }
 
-        .btn-submit:hover {
-            background-color: #e0b800;
-        }
-
-        .form-text {
-            font-size: 0.875em;
-        }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <div class="form-header text-center">
-        <h2>Formulir Pendataan Karyawan</h2>
-        <p>Silakan isi data diri Anda dengan lengkap dan benar.</p>
+    <div class="form-container">
+        <div class="form-header">
+            <h2>Formulir Data Karyawan Baru</h2>
+            <h2>EXATA GROUP</h2>
+        </div>
+
+        <form id="multiStepForm">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 33.33%;" aria-valuenow="33.33" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <!-- Step 1: Data Pribadi -->
+            <div class="form-step active">
+                <h3><i class="fas fa-user-circle me-2"></i>Data Pribadi</h3>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="namaLengkap" class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-control" id="namaLengkap" name="Nama Lengkap" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="divisi" class="form-label">Divisi</label>
+                        <select class="form-select" id="divisi" name="Divisi" required>
+                            <option selected disabled value="">Pilih Divisi...</option>
+                            <option>EXATA</option>
+                            <option>YANOSHI</option>
+                            <option>TRAVEL</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ttl" class="form-label">Tempat & Tanggal Lahir</label>
+                    <input type="text" class="form-control" id="ttl" name="Tempat & Tanggal Lahir" placeholder="Contoh: Jakarta, 20 April 2005" required>
+                </div>
+                 <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="telpKantor" class="form-label">No. Telp Kantor</label>
+                        <input type="tel" class="form-control" id="telpKantor" name="No. Telp Kantor">
+                         <small class="form-text text-muted">Isi jika ada.</small>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="telpPribadi" class="form-label">No. Telp Pribadi (WhatsApp)</label>
+                        <input type="tel" class="form-control" id="telpPribadi" name="No. Telp Pribadi" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="alamatDomisili" class="form-label">Alamat Domisili</label>
+                    <textarea class="form-control" id="alamatDomisili" name="Alamat Domisili" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="alamatKTP" class="form-label">Alamat Sesuai KTP</label>
+                    <textarea class="form-control" id="alamatKTP" name="Alamat Sesuai KTP" rows="3" required></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="btn btn-primary next-btn">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 2: Kontak Darurat -->
+            <div class="form-step">
+                <h3><i class="fas fa-users me-2"></i>Kontak Darurat</h3>
+                 <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="kontakDarurat1Nama" class="form-label">Nama & Hubungan Keluarga 1</label>
+                        <input type="text" class="form-control" id="kontakDarurat1Nama" name="Nama & Hubungan Keluarga 1" placeholder="Contoh: Iis Salmiah, Ibu Kandung" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="kontakDarurat1No" class="form-label">No. Kontak Darurat 1</label>
+                        <input type="tel" class="form-control" id="kontakDarurat1No" name="No. Kontak Darurat 1" required>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="kontakDarurat2Nama" class="form-label">Nama & Hubungan Keluarga 2</label>
+                        <input type="text" class="form-control" id="kontakDarurat2Nama" name="Nama & Hubungan Keluarga 2" placeholder="Contoh: Dadang, Ayah Tiri">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="kontakDarurat2No" class="form-label">No. Kontak Darurat 2</label>
+                        <input type="tel" class="form-control" id="kontakDarurat2No" name="No. Kontak Darurat 2">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary prev-btn"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button type="button" class="btn btn-primary next-btn">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 3: Dokumen Pendukung -->
+            <div class="form-step">
+                <h3><i class="fas fa-file-alt me-2"></i>Dokumen Pendukung</h3>
+                 <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="fotoKTP" class="form-label">Foto KTP</label>
+                        <input type="file" class="form-control" id="fotoKTP" name="Foto KTP" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="fotoAXA" class="form-label">Foto Kartu AXA Mandiri</label>
+                        <input type="file" class="form-control" id="fotoAXA" name="Foto Kartu AXA Mandiri">
+                        <small class="form-text text-muted">Isi jika ada.</small>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="fotoKK" class="form-label">Foto KK</label>
+                        <input type="file" class="form-control" id="fotoKK" name="Foto KK" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="fotoIjazah" class="form-label">Foto Ijazah Terakhir</label>
+                        <input type="file" class="form-control" id="fotoIjazah" name="Foto Ijazah Terakhir" required>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="noNPWP" class="form-label">Nomor NPWP</label>
+                        <input type="text" class="form-control" id="noNPWP" name="Nomor NPWP">
+                        <small class="form-text text-muted">Isi jika punya.</small>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="fotoNPWP" class="form-label">Foto NPWP</label>
+                        <input type="file" class="form-control" id="fotoNPWP" name="Foto NPWP">
+                        <small class="form-text text-muted">Isi jika punya.</small>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="fotoSIMA" class="form-label">Foto SIM A</label>
+                        <input type="file" class="form-control" id="fotoSIMA" name="Foto SIM A">
+                        <small class="form-text text-muted">Isi jika punya.</small>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="fotoSIMC" class="form-label">Foto SIM C</label>
+                        <input type="file" class="form-control" id="fotoSIMC" name="Foto SIM C">
+                         <small class="form-text text-muted">Isi jika punya.</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Pribadi</label>
+                    <input type="email" class="form-control" id="email" name="Email Pribadi" required>
+                </div>
+                 <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="namaBank" class="form-label">Nama Bank</label>
+                        <select class="form-select" id="namaBank" name="Nama Bank" required>
+                            <option selected disabled value="">Pilih Bank...</option>
+                            <option>BCA</option>
+                            <option>MANDIRI</option>
+                            <option>BRI</option>
+                            <option>BNI</option>
+                            <option>LAINNYA</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="noRekening" class="form-label">Nomor Rekening</label>
+                        <input type="text" class="form-control" id="noRekening" name="Nomor Rekening" required>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary prev-btn"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button type="submit" class="btn btn-success">Submit <i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </form>
     </div>
 
-    <!-- Progress Bar -->
-    <div class="progress-bar-container">
-        <div class="progress">
-            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-    </div>
-
-    <form id="employeeForm">
-        <!-- Step 1: Informasi Dasar -->
-        <div class="form-step active" id="step1">
-            <h5 class="mb-4">Langkah 1: Informasi Pribadi</h5>
-            <div class="mb-3">
-                <label for="namaLengkap" class="form-label">Nama Lengkap</label>
-                <input type="text" class="form-control" id="namaLengkap" name="NAMA LENGKAP" required>
-            </div>
-            <div class="mb-3">
-                <label for="divisi" class="form-label">Divisi</label>
-                <input type="text" class="form-control" id="divisi" name="DIVISI" required>
-            </div>
-            <div class="mb-3">
-                <label for="ttl" class="form-label">Tempat, Tanggal Lahir</label>
-                <input type="text" class="form-control" id="ttl" name="TEMPAT TANGGAL LAHIR" placeholder="Cth: Jakarta, 20 April 2005" required>
-            </div>
-            <div class="mb-3">
-                <label for="telpKantor" class="form-label">No. Telpon Kantor</label>
-                <input type="tel" class="form-control" id="telpKantor" name="NO. TELPON KANTOR (jika ada)" placeholder="(jika ada)">
-            </div>
-            <div class="mb-3">
-                <label for="telpPribadi" class="form-label">No. Telpon Pribadi (WhatsApp Aktif)</label>
-                <input type="tel" class="form-control" id="telpPribadi" name="NO. TELPON PRIBADI (whatsapp aktif)" required>
-            </div>
-             <div class="mb-3">
-                <label for="email" class="form-label">Email Pribadi</label>
-                <input type="email" class="form-control" id="email" name="EMAIL PRIBADI" required>
-            </div>
-        </div>
-
-        <!-- Step 2: Alamat & Kontak Darurat -->
-        <div class="form-step" id="step2">
-            <h5 class="mb-4">Langkah 2: Alamat & Kontak Darurat</h5>
-            <div class="mb-3">
-                <label for="alamatDomisili" class="form-label">Alamat Domisili</label>
-                <textarea class="form-control" id="alamatDomisili" name="ALAMAT DOMISILI" rows="3" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="alamatKtp" class="form-label">Alamat Sesuai KTP</label>
-                <textarea class="form-control" id="alamatKtp" name="ALAMAT SESUAI KTP" rows="3" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="kontakDarurat1" class="form-label">Nama & Hubungan Kontak Darurat 1</label>
-                <input type="text" class="form-control" id="kontakDarurat1" name="NAMA KONTAK DARURAT KELUARGA & HUBUNGAN KELUARGA 1" placeholder="Cth: Iis Salmiah, Ibu Kandung" required>
-            </div>
-             <div class="mb-3">
-                <label for="noKontakDarurat1" class="form-label">No. Kontak Darurat 1</label>
-                <input type="tel" class="form-control" id="noKontakDarurat1" name="NO. KONTAK DARURAT KELUARGA 1" required>
-            </div>
-            <div class="mb-3">
-                <label for="kontakDarurat2" class="form-label">Nama & Hubungan Kontak Darurat 2</label>
-                <input type="text" class="form-control" id="kontakDarurat2" name="NAMA KONTAK DARURAT KELUARGA & HUBUNGAN KELUARGA 2" placeholder="Cth: Dadang, Ayah tiri">
-            </div>
-             <div class="mb-3">
-                <label for="noKontakDarurat2" class="form-label">No. Kontak Darurat 2</label>
-                <input type="tel" class="form-control" id="noKontakDarurat2" name="NO. KONTAK DARURAT KELUARGA 2">
-            </div>
-        </div>
-        
-        <!-- Step 3: Unggah Dokumen Penting -->
-        <div class="form-step" id="step3">
-            <h5 class="mb-4">Langkah 3: Unggah Dokumen</h5>
-             <div class="mb-3">
-                <label for="fotoKtp" class="form-label">Foto KTP</label>
-                <input class="form-control" type="file" id="fotoKtp" name="FOTO KTP" accept="image/*,.pdf" required>
-            </div>
-            <div class="mb-3">
-                <label for="fotoKk" class="form-label">Foto Kartu Keluarga (KK)</label>
-                <input class="form-control" type="file" id="fotoKk" name="FOTO KK" accept="image/*,.pdf" required>
-            </div>
-            <div class="mb-3">
-                <label for="fotoIjasah" class="form-label">Foto Ijasah Terakhir</label>
-                <input class="form-control" type="file" id="fotoIjasah" name="FOTO IJASAH TERAKHIR" accept="image/*,.pdf" required>
-            </div>
-            <div class="mb-3">
-                <label for="fotoAxa" class="form-label">Foto Kartu AXA Mandiri</label>
-                <input class="form-control" type="file" id="fotoAxa" name="FOTO KARTU AXA MANDIRI (Jika ada)" accept="image/*,.pdf">
-                 <div class="form-text">Kosongkan jika tidak ada.</div>
-            </div>
-        </div>
-
-        <!-- Step 4: Finansial & Dokumen Tambahan -->
-        <div class="form-step" id="step4">
-            <h5 class="mb-4">Langkah 4: Informasi Finansial & Dokumen Lainnya</h5>
-             <div class="mb-3">
-                <label for="noNpwp" class="form-label">Nomor NPWP</label>
-                <input type="text" class="form-control" id="noNpwp" name="NOMOR NPWP">
-            </div>
-             <div class="mb-3">
-                <label for="fotoNpwp" class="form-label">Foto NPWP</label>
-                <input class="form-control" type="file" id="fotoNpwp" name="FOTO NPWP" accept="image/*,.pdf">
-                <div class="form-text">Kosongkan jika tidak ada.</div>
-            </div>
-             <div class="mb-3">
-                <label for="fotoSimA" class="form-label">Foto SIM A</label>
-                <input class="form-control" type="file" id="fotoSimA" name="FOTO SIM A (Jika Punya)" accept="image/*,.pdf">
-                <div class="form-text">Kosongkan jika tidak punya.</div>
-            </div>
-            <div class="mb-3">
-                <label for="fotoSimC" class="form-label">Foto SIM C</label>
-                <input class="form-control" type="file" id="fotoSimC" name="FOTO SIM C (Jika Punya)" accept="image/*,.pdf">
-                <div class="form-text">Kosongkan jika tidak punya.</div>
-            </div>
-            <div class="mb-3">
-                <label for="namaBank" class="form-label">Nama Bank</label>
-                <input type="text" class="form-control" id="namaBank" name="NAMA BANK" required>
-            </div>
-            <div class="mb-3">
-                <label for="noRekening" class="form-label">Nomor Rekening</label>
-                <input type="number" class="form-control" id="noRekening" name="NOMOR REKENING" required>
-            </div>
-        </div>
-
-        <!-- Tombol Navigasi -->
-        <div class="form-buttons">
-            <button type="button" class="btn btn-secondary" id="prevBtn" onclick="nextPrev(-1)">Sebelumnya</button>
-            <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Berikutnya</button>
-        </div>
-    </form>
-</div>
-
-<!-- Bootstrap JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- SweetAlert2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    // URL Web App Google Apps Script Anda akan diletakkan di sini
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyZJNmwKfLV17K0qhzXEaz4Y5pehVa9PfjG0lKzgbzhuC6B5SXQ2RzibkWfZ0-CYTh1/exec';
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-    let currentStep = 0; // Langkah saat ini dimulai dari 0
-    const steps = document.getElementsByClassName("form-step");
-    showStep(currentStep); // Tampilkan langkah awal
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const formSteps = Array.from(document.querySelectorAll('.form-step'));
+            const nextBtns = document.querySelectorAll('.next-btn');
+            const prevBtns = document.querySelectorAll('.prev-btn');
+            const form = document.getElementById('multiStepForm');
+            const progressBar = document.querySelector('.progress-bar');
 
-    function showStep(n) {
-        // Tampilkan langkah saat ini dan sembunyikan yang lain
-        for (let i = 0; i < steps.length; i++) {
-            steps[i].classList.remove("active");
-        }
-        steps[n].classList.add("active");
+            let currentStep = 0;
 
-        // Atur tampilan tombol "Sebelumnya"
-        document.getElementById("prevBtn").style.display = n == 0 ? "none" : "inline";
-        
-        // Ganti teks tombol "Berikutnya" menjadi "Kirim" di langkah terakhir
-        if (n == (steps.length - 1)) {
-            document.getElementById("nextBtn").innerHTML = "Kirim Data";
-            document.getElementById("nextBtn").classList.remove('btn-primary');
-            document.getElementById("nextBtn").classList.add('btn-submit');
-        } else {
-            document.getElementById("nextBtn").innerHTML = "Berikutnya";
-            document.getElementById("nextBtn").classList.remove('btn-submit');
-            document.getElementById("nextBtn").classList.add('btn-primary');
-        }
-        
-        updateProgressBar(n);
-    }
+            const updateFormSteps = () => {
+                formSteps.forEach((step, index) => {
+                    step.classList.toggle('active', index === currentStep);
+                });
+            };
 
-    function nextPrev(n) {
-        // Validasi form sebelum melanjutkan
-        if (n == 1 && !validateForm()) return false;
-        
-        // Pindah ke langkah berikutnya jika belum selesai
-        if ((currentStep + n) < steps.length) {
-            currentStep += n;
-            showStep(currentStep);
-        } else {
-             // Jika ini adalah langkah terakhir, kirim form
-            if (validateForm()) {
-                submitForm();
-            }
-        }
-    }
+            const updateProgressBar = () => {
+                const progressPercentage = ((currentStep + 1) / formSteps.length) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+                progressBar.setAttribute('aria-valuenow', progressPercentage);
+            };
 
-    function validateForm() {
-        let valid = true;
-        const currentInputs = steps[currentStep].querySelectorAll("input[required], textarea[required], select[required]");
-        
-        currentInputs.forEach(input => {
-            if (input.value.trim() === "") {
-                input.style.borderColor = "red";
-                valid = false;
-            } else {
-                input.style.borderColor = "#ced4da"; // Reset border
-            }
-        });
-
-        if (!valid) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Oops...',
-                text: 'Harap isi semua kolom yang wajib diisi.',
-                confirmButtonColor: 'var(--primary-color)'
-            });
-        }
-        return valid;
-    }
-
-    function updateProgressBar(n) {
-        const progressBar = document.getElementById("progressBar");
-        const progress = ((n + 1) / steps.length) * 100;
-        progressBar.style.width = progress + "%";
-        progressBar.setAttribute("aria-valuenow", progress);
-    }
-    
-    // Fungsi untuk mengubah file menjadi Base64
-    function toBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-
-    async function submitForm() {
-        if (scriptURL === 'MASUKKAN_URL_WEB_APP_ANDA_DI_SINI') {
-             Swal.fire({
-                icon: 'error',
-                title: 'Kesalahan Konfigurasi',
-                text: 'URL Google Apps Script belum diatur. Silakan hubungi administrator.',
-                confirmButtonColor: 'var(--primary-color)'
-            });
-            return;
-        }
-
-        const form = document.getElementById('employeeForm');
-        const submitButton = document.getElementById('nextBtn');
-        
-        Swal.fire({
-            title: 'Mengirim Data...',
-            html: 'Mohon tunggu sebentar.',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-
-        const formDataObj = {};
-        const formElements = form.elements;
-        const filePromises = [];
-
-        for (let i = 0; i < formElements.length; i++) {
-            const element = formElements[i];
-            if (element.name) {
-                if (element.type === 'file') {
-                    if (element.files.length > 0) {
-                        const file = element.files[0];
-                        // Buat promise untuk konversi file dan tambahkan ke array
-                        const filePromise = toBase64(file).then(base64String => {
-                            return {
-                                name: element.name,
-                                value: {
-                                    fileName: file.name,
-                                    mimeType: file.type,
-                                    data: base64String.split(',')[1] // Ambil hanya data base64
-                                }
-                            };
-                        });
-                        filePromises.push(filePromise);
+            const validateStep = (stepIndex) => {
+                const currentStepFields = formSteps[stepIndex].querySelectorAll('[required]');
+                let isValid = true;
+                currentStepFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        field.classList.remove('is-invalid');
                     }
-                } else {
-                    formDataObj[element.name] = element.value;
+                });
+                if (!isValid) {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Mohon lengkapi semua field yang wajib diisi!',
+                        confirmButtonColor: '#9b59b6'
+                    });
                 }
-            }
-        }
-        
-        // Tunggu semua file selesai dikonversi
-        const fileData = await Promise.all(filePromises);
-        
-        // Gabungkan data file ke objek utama
-        fileData.forEach(file => {
-            formDataObj[file.name] = file.value;
-        });
+                return isValid;
+            };
 
-        // Kirim data ke Google Apps Script
-        fetch(scriptURL, { 
-            method: 'POST', 
-            mode: 'no-cors', // Penting untuk menghindari error CORS saat development, tapi Apps Script harus di-deploy dengan benar
-            cache: 'no-cache',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formDataObj),
-            redirect: 'follow'
-        })
-        .then(response => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: 'Data Anda telah berhasil dikirim.',
-                confirmButtonColor: 'var(--primary-color)'
+            nextBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (validateStep(currentStep)) {
+                        if (currentStep < formSteps.length - 1) {
+                            currentStep++;
+                            updateFormSteps();
+                            updateProgressBar();
+                        }
+                    }
+                });
             });
-            form.reset();
-            currentStep = 0;
-            showStep(currentStep);
-        })
-        .catch(error => {
-            console.error('Error!', error.message);
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal!',
-                text: 'Terjadi kesalahan saat mengirim data. Silakan coba lagi.',
-                confirmButtonColor: 'var(--primary-color)'
-            });
-        });
-    }
 
-</script>
+            prevBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (currentStep > 0) {
+                        currentStep--;
+                        updateFormSteps();
+                        updateProgressBar();
+                    }
+                });
+            });
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                if (!validateStep(currentStep)) {
+                    return;
+                }
+
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbyZJNmwKfLV17K0qhzXEaz4Y5pehVa9PfjG0lKzgbzhuC6B5SXQ2RzibkWfZ0-CYTh1/exec';
+                
+                if (scriptURL === 'GANTI_DENGAN_URL_APLIKASI_WEB_ANDA') {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Konfigurasi Belum Selesai',
+                        html: 'Anda perlu men-deploy Google Apps Script dan memasukkan URL Aplikasi Web ke dalam variabel <strong>scriptURL</strong> di kode HTML.',
+                        confirmButtonColor: '#9b59b6'
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Mengirim Data...',
+                    html: 'Mohon tunggu sebentar, data Anda sedang diproses.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                const formData = new FormData(form);
+                const dataObject = {};
+
+                // Proses form data, termasuk file
+                const filePromises = [];
+                for (const [key, value] of formData.entries()) {
+                    if (value instanceof File && value.size > 0) {
+                        const promise = new Promise((resolve) => {
+                           const reader = new FileReader();
+                           reader.onload = function(e) {
+                               const base64 = e.target.result.split(',')[1];
+                               resolve({
+                                   key,
+                                   value: {
+                                       fileName: value.name,
+                                       mimeType: value.type,
+                                       blob: base64
+                                   }
+                               });
+                           };
+                           reader.readAsDataURL(value);
+                        });
+                        filePromises.push(promise);
+                    } else {
+                        dataObject[key] = value;
+                    }
+                }
+                
+                const fileResults = await Promise.all(filePromises);
+                fileResults.forEach(res => {
+                    dataObject[res.key] = res.value;
+                });
+
+                try {
+                    const response = await fetch(scriptURL, {
+                        method: 'POST',
+                        mode: 'cors',
+                        headers: {
+                            'Content-Type': 'text/plain;charset=utf-8',
+                        },
+                        body: JSON.stringify(dataObject)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Data berhasil dikirim dan tersimpan di sistem.',
+                            confirmButtonColor: '#9b59b6'
+                        }).then(() => {
+                            // Cek nama bank setelah berhasil
+                            const bank = document.getElementById('namaBank').value;
+                            if (bank.toUpperCase() !== 'MANDIRI') {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Informasi Rekening',
+                                    html: 'Untuk kemudahan proses penggajian, Anda disarankan untuk segera membuat rekening <b>Bank Mandiri</b>. Mohon informasikan nomor rekening baru Anda ke HR jika sudah dibuat.',
+                                    confirmButtonColor: '#9b59b6'
+                                });
+                            }
+                            form.reset();
+                            currentStep = 0;
+                            updateFormSteps();
+                            updateProgressBar();
+                        });
+                    } else {
+                        throw new Error(result.message);
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan',
+                        text: 'Gagal mengirim data. Silakan coba lagi. Detail: ' + error.message,
+                        confirmButtonColor: '#9b59b6'
+                    });
+                }
+            });
+            
+            updateFormSteps();
+            updateProgressBar();
+        });
+    </script>
+
 </body>
 </html>
